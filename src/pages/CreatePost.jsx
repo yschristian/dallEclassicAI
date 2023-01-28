@@ -11,12 +11,22 @@ const CreatePost = () => {
     prompt: "",
     photo: ""
   })
-  const [generating, setGenerating] = useState(false)
+  const [generatingImg, setGeneratingImg] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = (e) => { }
-  const handleChange = (e) => { }
-  const handleSupriseMe = (e) => { }
+  const generateImage = (e) => { 
+
+  }
+  const handleSubmit = (e) => {
+
+   }
+  const handleChange = (e) => { 
+    setForm({...form ,[e.target.name] : e.target.value})
+  }
+  const handleSupriseMe = (e) => { 
+    const randomPrompt = getRandomPrompt(form.prompt)
+    setForm({...form , prompt : randomPrompt})
+  }
 
   return (
     <section className='max-w-xl mx-auto'>
@@ -57,9 +67,30 @@ const CreatePost = () => {
                 className="w-9/12 h-9/12 object-contain opacity "
               />
             )}
+            {generatingImg && (
+              <div className="absolute insert-0 z-0 flex justify-center items-center bg-[rgb(0,0,0,0.5)] rounded-lg">
+                <Loader />
+              </div>
+            )}
           </div>
         </div>
-
+        <div className='mt-5 flex gap-5'>
+          <button
+            type="button"
+            onClick={generateImage}
+            className="text-white bg-green-700 font-medium rounded-md px-5 py-2.5 text-sm w-full sm:w-auto text-center"
+          >
+            {generatingImg ? "Generating...." : "Generate"}
+          </button>
+        </div>
+        <div className="mt-10">
+          <p className='mt-2 text-[#666e75] text-[14px]'>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam nesciunt, cum nulla blanditiis dignissimos est cumque doloribus ducimus impedit asperiores ex laboriosam fugit illum enim eius repellendus sunt soluta perspiciatis!
+          </p>
+          <button type='submit' className='mt-5 text-white bg-[#6469ff] font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center'>
+            {loading ? 'Sharing...' : 'Share with the community'}
+          </button>
+        </div>
       </form>
     </section>
   )
