@@ -31,15 +31,36 @@ const CreatePost = () => {
       } catch (error) {
         console.log(error);
         // alert(error)
-      }finally{
+      } finally {
         setGeneratingImg(false)
       }
-    }else{
+    } else {
       alert("please enter prompt")
     }
   }
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (form.prompt && form.photo) {
+      setLoading(true)
+      try {
+        const response = await fetch("http://localhost:8000/api/v1/create", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(form)
 
+        })
+        await response.json()
+        navigate('/')
+      } catch (error) {
+        alert(error)
+      } finally {
+        setLoading(false)
+      }
+    }else{
+      alert("please enter prompt and generate image")
+    }
   }
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
