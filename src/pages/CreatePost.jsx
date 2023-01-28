@@ -14,18 +14,39 @@ const CreatePost = () => {
   const [generatingImg, setGeneratingImg] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const generateImage = (e) => { 
-
+  const generateImage = async (e) => {
+    if (form.prompt) {
+      try {
+        setGeneratingImg(true)
+        const response = await fetch("http://localhost:8000/api/v1/dall/gene", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ prompt: form.prompt })
+        })
+        const data = await response.json()
+        console.log(data);
+        setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo}` })
+      } catch (error) {
+        console.log(error);
+        // alert(error)
+      }finally{
+        setGeneratingImg(false)
+      }
+    }else{
+      alert("please enter prompt")
+    }
   }
   const handleSubmit = (e) => {
 
-   }
-  const handleChange = (e) => { 
-    setForm({...form ,[e.target.name] : e.target.value})
   }
-  const handleSupriseMe = (e) => { 
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
+  const handleSupriseMe = (e) => {
     const randomPrompt = getRandomPrompt(form.prompt)
-    setForm({...form , prompt : randomPrompt})
+    setForm({ ...form, prompt: randomPrompt })
   }
 
   return (
